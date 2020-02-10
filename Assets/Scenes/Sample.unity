@@ -6273,7 +6273,7 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 1
   ObservedComponents:
   - {fileID: 1394550890}
   viewIdField: 91
@@ -9159,6 +9159,11 @@ PrefabInstance:
         type: 3}
       propertyPath: viewIdField
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 819967668643498121, guid: 077adf794a4a33e42a51f831dc6e5998,
+        type: 3}
+      propertyPath: OwnershipTransfer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 819967668643498163, guid: 077adf794a4a33e42a51f831dc6e5998,
         type: 3}

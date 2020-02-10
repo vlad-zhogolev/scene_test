@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Photon.Pun;
 
-public class SwitchController : MonoBehaviour, IPunObservable
+public class SwitchController : MonoBehaviourPun, IPunObservable
 {
     [SerializeField]
     private Light[] lights;
@@ -10,6 +10,9 @@ public class SwitchController : MonoBehaviour, IPunObservable
     private bool isTurnedOn;
 
     bool isPlayerInteracts = false;
+
+    [SerializeField]
+    bool switchLights = false;
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -33,9 +36,11 @@ public class SwitchController : MonoBehaviour, IPunObservable
     {
         bool isRIndexTriggerPressed = OVRInput.Get(OVRInput.RawButton.RIndexTrigger);
         bool isButtonReleased = OVRInput.GetUp(OVRInput.Button.One);
-        if (isPlayerInteracts && (isRIndexTriggerPressed || isButtonReleased))
+        if (switchLights || (isPlayerInteracts && (isRIndexTriggerPressed || isButtonReleased)))
         {
+            switchLights = false;
             Debug.LogFormat("SwitchController: Switch lights, isRIndexTriggerPressed = {0}, isButtonReleased = {1}", isRIndexTriggerPressed, isButtonReleased);
+            base.photonView.RequestOwnership();
             isTurnedOn = !isTurnedOn;
             foreach (var light in lights)
             {
