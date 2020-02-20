@@ -68,6 +68,7 @@ public class PUN2_RigidbodySync : MonoBehaviourPun, IPunObservable
 
     void OnCollisionEnter(Collision contact)
     {
+        //contact.transform.root.gameObject.GetComponent<PhotonView>().RequestOwnership();
         //Debug.LogFormat("PUN2_RigidbodySync: Collision detected, this: {0}, other: {1}, photonView.IsMine: {2}", gameObject.name, contact.gameObject.name, photonView.IsMine);
         if (!photonView.IsMine)
         {

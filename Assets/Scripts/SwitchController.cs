@@ -13,7 +13,7 @@ public class SwitchController : MonoBehaviourPun, IPunObservable
 
     [SerializeField]
     bool switchLights = false;
-
+    
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
