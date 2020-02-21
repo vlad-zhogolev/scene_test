@@ -9,8 +9,6 @@ public class DoorController : MonoBehaviour
     [SerializeField]
     bool changeState = false;
 
-    GameObject doorHand;
-
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -24,4 +22,5 @@ public class DoorController : MonoBehaviour
             animator.SetBool("isOpen", !animator.GetBool("isOpen"));
         }
     }
+
 }

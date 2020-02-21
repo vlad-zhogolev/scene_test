@@ -4455,6 +4455,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6284ddf842c85234bb8115b9efc76166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lightSwitches:
+  - {fileID: 1394550888}
 --- !u!4 &684321044
 Transform:
   m_ObjectHideFlags: 0

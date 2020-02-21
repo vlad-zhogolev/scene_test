@@ -1,36 +1,46 @@
 ﻿using UnityEngine;
 using Photon.Pun;
 
-public class SwitchController : MonoBehaviourPun, IPunObservable
+public class SwitchController : MonoBehaviourPun
 {
     [SerializeField]
     private Light[] lights;
 
     [SerializeField]
-    private bool isTurnedOn;
+    public bool isTurnedOn;
 
     bool isPlayerInteracts = false;
 
     [SerializeField]
     bool switchLights = false;
     
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    [PunRPC]
+    void SwitchLights(bool isTurnedOn)
     {
-        if (stream.IsWriting)
+        this.isTurnedOn = isTurnedOn;
+        foreach (var light in lights)
         {
-            Debug.Log("SwitchController: send light state");
-            stream.SendNext(isTurnedOn);
-        }
-        else
-        {
-            Debug.Log("SwitchController: received light state");
-            isTurnedOn = (bool)stream.ReceiveNext();
-            foreach (var light in lights)
-            {
-                light.enabled = isTurnedOn;
-            }
+            light.enabled = isTurnedOn;
         }
     }
+
+    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    //{
+    //    if (stream.IsWriting)
+    //    {
+    //        Debug.Log("SwitchController: send light state");
+    //        stream.SendNext(isTurnedOn);
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("SwitchController: received light state");
+    //        isTurnedOn = (bool)stream.ReceiveNext();
+    //        foreach (var light in lights)
+    //        {
+    //            light.enabled = isTurnedOn;
+    //        }
+    //    }
+    //}
 
     void Update()
     {
@@ -39,13 +49,14 @@ public class SwitchController : MonoBehaviourPun, IPunObservable
         if (switchLights || (isPlayerInteracts && (isRIndexTriggerPressed || isButtonReleased)))
         {
             switchLights = false;
-            Debug.LogFormat("SwitchController: Switch lights, isRIndexTriggerPressed = {0}, isButtonReleased = {1}", isRIndexTriggerPressed, isButtonReleased);
-            base.photonView.RequestOwnership();
-            isTurnedOn = !isTurnedOn;
-            foreach (var light in lights)
-            {
-                light.enabled = isTurnedOn;
-            }
+            this.photonView.RPC("SwitchLights", RpcTarget.All, !isTurnedOn);
+            //Debug.LogFormat("SwitchController: Switch lights, isRIndexTriggerPressed = {0}, isButtonReleased = {1}", isRIndexTriggerPressed, isButtonReleased);
+            //base.photonView.RequestOwnership();
+            //isTurnedOn = !isTurnedOn;
+            //foreach (var light in lights)
+            //{
+            //    light.enabled = isTurnedOn;
+            //}
         }
     }
 

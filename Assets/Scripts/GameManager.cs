@@ -4,6 +4,9 @@ using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    [SerializeField]
+    private GameObject[] lightSwitches;
+
     #region MonoBehaviour Callbacks
 
     void Start()
@@ -18,6 +21,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player other)
     {
         Debug.LogFormat("GameManager: OnPlayerEnteredRoom() {0}", other.NickName);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            foreach (var lightSwitch in lightSwitches)
+            {
+                lightSwitch.GetPhotonView().RPC("SwitchLights", other, lightSwitch.GetComponent<SwitchController>().isTurnedOn);
+            }
+        }
     }
 
     #endregion
