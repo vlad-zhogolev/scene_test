@@ -1,0 +1,10 @@
+ManifestFileVersion: 0
+CRC: 4217781258
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: downloadtest
+      Dependencies: {}
+    Info_1:
+      Name: testobject
+      Dependencies: {}
