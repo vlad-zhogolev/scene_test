@@ -54,6 +54,21 @@ namespace Com.Sberbank.VRHouse
         {
             PhotonNetwork.AutomaticallySyncScene = true;
             DataProvider.client = new WebSocketClient("vrhouse.denmko.ru", 1998);
+            //using (UnityWebRequest www = UnityWebRequest.Get("http://vrhouse.denmko.ru:1998/client/register"))
+            //{
+            //    www.SendWebRequest();
+            //
+            //    if (www.isNetworkError || www.isHttpError)
+            //    {
+            //        Debug.Log(www.error);
+            //    }
+            //    else
+            //    {
+            //        Debug.Log("Form upload complete!");
+            //    }
+            //}
+            
+
             DataProvider.client.OnInit += HandleInit;
         }
 
