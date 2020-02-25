@@ -15,6 +15,7 @@
 
 /[Aa]ssets/Oculus/
 /[Aa]ssets/Photon/
+/Assets/AssetBundles/
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
