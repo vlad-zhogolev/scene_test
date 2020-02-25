@@ -2,16 +2,18 @@
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using UnityEngine.Networking;
 using WebSocketSharp;
 
 namespace Client
 {
-    public class WebSocketClient : IDisposable
+    public class WebSocketClient 
     {
-        private readonly HttpClient _httpClient;
         private WebSocket _webSocket;
         private string _address;
         private int _port;
@@ -35,45 +37,25 @@ namespace Client
         {
             _address = address;
             _port = port;
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri(GetUrlAddress());
-            _httpClient.DefaultRequestHeaders.Accept.Clear();
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             OnInit += (init) => { };
             OnSwap += (swap) => { };
             OnInteractiveChange += (inter) => { };
 
-            var connectionStatus = ConnectToSessionForcedAsync().GetAwaiter().GetResult();
-            if (!connectionStatus)
-            {
-                ConnectToSessionForcedAsync().GetAwaiter().GetResult();
-            }
+            ConnectToSessionForcedAsync().GetAwaiter().GetResult();
             _webSocket = ConnectSocket();
-        }
-
-        public async Task<bool> ConnectToSessionAsync()
-        {
-            var response = await _httpClient.GetAsync("/client/register");
-            if (!response.IsSuccessStatusCode)
-            {
-                return false;
-            }
-
-            var str = await response.Content.ReadAsStringAsync();
-            _clientId = str;
-
-            return true;
         }
 
         public async Task<bool> ConnectToSessionForcedAsync()
         {
-            var response = await _httpClient.GetAsync("/client/register/force");
-            if (!response.IsSuccessStatusCode)
+            WebRequest request = WebRequest.Create($"{GetUrlAddress()}/client/register/force");
+            var response = request.GetResponse();
+            var str = string.Empty;
+            using (Stream responseStream = response.GetResponseStream())
             {
-                return false;
+                StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);
+                str = reader.ReadToEnd();
             }
 
-            var str = await response.Content.ReadAsStringAsync();
             if (str[0] == '\"')
             {
                 str = str.Substring(1, str.Length - 2);
@@ -81,16 +63,6 @@ namespace Client
             _clientId = str;
 
             return true;
-        }
-
-        public async Task<string> GetClientList()
-        {
-            var response = await _httpClient.GetAsync("/client/list");
-            response.EnsureSuccessStatusCode();
-
-            var result = await response.Content.ReadAsStringAsync();
-
-            return result;
         }
 
         public async Task PostPosition(int x, int y)
@@ -103,6 +75,12 @@ namespace Client
             };
             var content = JsonConvert.SerializeObject(new SocketMessage() { messageType = "POSITION", messageValue = JsonConvert.SerializeObject(position) });
             _webSocket.SendAsync(content, (completed) => { });
+        }
+
+        public async Task PostEcho()
+        {
+            var echo = JsonConvert.SerializeObject(new SocketMessage() { messageType = "ECHO", messageValue = "test" });
+            _webSocket.SendAsync(echo, (completed) => { });
         }
 
         public async Task PostChangeInterativeState(Interactive interactive)
@@ -166,11 +144,6 @@ namespace Client
             address += $":{_port}";
 
             return address;
-        }
-
-        public void Dispose()
-        {
-            _httpClient?.Dispose();
         }
     }
 }

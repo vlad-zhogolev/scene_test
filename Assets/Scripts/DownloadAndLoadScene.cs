@@ -9,12 +9,17 @@ using System;
 
 public class DownloadAndLoadScene : MonoBehaviour
 {
-    string url = "https://uc91a76e971c0b1f22607af8c75c.dl.dropboxusercontent.com/cd/0/get/AyotK5mpnqLdDXlfulZAFNL6Dfk6SM4KxTzblDvn-UXbiJEqMQazxEqBUYUuMf7oJrl-IJPqutiqht3nfGba3wLmtXk1k3YWTht_gNU_1B_FL-7mnwYD11vRkvL2n4RdKK4/file?dl=1#";
+    string url = "https://uc03e634e3dea4ef42a001e84722.dl.dropboxusercontent.com/cd/0/get/AytQ8kw_3jRkzLA4q-E-pAtpVDq1JtzTe_KrwBugO5yiafptIlWMHd_963EkcLWZaHEo9l2hWaZiUJQSv9G7RqBdVOrX20tRrorB8th0UMdegJKvLKwsB8fB3O6ox5wrds4/file?dl=1#";
 
     AssetBundle assetBundle;
 
     // Start is called before the first frame update
-    IEnumerator Start()
+    void  Start()
+    {
+        StartCoroutine(DownloadScene());
+    }
+
+    IEnumerator DownloadScene()
     {
         Debug.Log("DownloadAndLoadScene: start");
         using (var request = UnityWebRequestAssetBundle.GetAssetBundle(url))
@@ -30,7 +35,7 @@ public class DownloadAndLoadScene : MonoBehaviour
         Debug.Log("DownloadAndLoadScene: end");
         string[] scenePaths = assetBundle.GetAllScenePaths();
 
-            SceneManager.LoadScene(scenePaths[0]);
-            Debug.Log(scenePaths[0]);
+        SceneManager.LoadScene(scenePaths[0]);
+        Debug.Log(scenePaths[0]);
     }
 }

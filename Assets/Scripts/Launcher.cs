@@ -7,11 +7,15 @@ using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 namespace Com.Sberbank.VRHouse
 {
     public class Launcher : MonoBehaviourPunCallbacks
     {
+        public delegate void OnInitMessage(Init init);
+        public event OnInitMessage OnInit;
+
         #region Private Fields
 
         /// <summary>
@@ -50,10 +54,27 @@ namespace Com.Sberbank.VRHouse
 
         #region MonoBehaviour Callbacks
 
-        void Awake()
+        Init MockInit()
         {
-            PhotonNetwork.AutomaticallySyncScene = true;
-            DataProvider.client = new WebSocketClient("vrhouse.denmko.ru", 1998);
+            return new Init
+            {
+                scene = new Client.Model.Scene
+                {
+                    name = "test",
+                    link = "https://ucb9d9b89f12e88ca86bac47b7a5.dl.dropboxusercontent.com/cd/0/get/AyvTKCtdO6T6XRO6_A_OYH08ZZfOrmimCQr66iHiyBe5jqxAhbWdGqHmKa0_3e_X11D-T9O_Ob7_nTt1b6b1fTijxmSajzgi45UcoKh5jgGDe_gZbkIHSCSEld2W7T31tCA/file?dl=1#"
+                },
+                objects = new Client.Model.Object[0],
+                roomId = "test_room",
+                maxPlayers = 2
+            };
+        }
+
+        void Start()
+        {
+            //PhotonNetwork.AutomaticallySyncScene = true;
+            //DataProvider.client = new WebSocketClient("vrhouse.denmko.ru", 1998);
+            //DataProvider.client.PostEcho().GetAwaiter().GetResult();
+
             //using (UnityWebRequest www = UnityWebRequest.Get("http://vrhouse.denmko.ru:1998/client/register"))
             //{
             //    www.SendWebRequest();
@@ -67,9 +88,12 @@ namespace Com.Sberbank.VRHouse
             //        Debug.Log("Form upload complete!");
             //    }
             //}
-            
 
-            DataProvider.client.OnInit += HandleInit;
+
+            //DataProvider.client.OnInit += HandleInit;
+            this.OnInit += HandleInit;
+            OnInit(MockInit());
+            //HandleInit(MockInit());
         }
 
         //void Start()
@@ -121,15 +145,9 @@ namespace Com.Sberbank.VRHouse
 
         void HandleInit(Init init)
         {
-            Task.Run(() =>
-            {
-                Debug.LogFormat("{0}: Handling Init: {1}", GetType().Name);
-                DataProvider.init = init;
-                DownloadScene();
-                Debug.LogFormat("{0}: Start connecting to scene", GetType().Name);
-                PhotonNetwork.GameVersion = gameVersion;
-                PhotonNetwork.ConnectUsingSettings();
-            });
+            Debug.LogFormat("{0}: Handling Init", GetType().Name);
+            DataProvider.init = init;
+            StartCoroutine(DownloadScene());
         }
 
         IEnumerator DownloadScene()
@@ -148,6 +166,11 @@ namespace Com.Sberbank.VRHouse
                 Debug.LogFormat("{0}: Scene asset bundle downloaded", GetType().Name);
 
                 sceneName = sceneAssetBundle.GetAllScenePaths()[0];
+
+                Debug.LogFormat("{0}: Start connecting to scene", GetType().Name);
+                PhotonNetwork.GameVersion = gameVersion;
+                PhotonNetwork.ConnectUsingSettings();
+                //SceneManager.LoadScene(sceneName);
             }
         }
     }
