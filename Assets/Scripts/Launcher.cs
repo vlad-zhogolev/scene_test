@@ -14,7 +14,6 @@ namespace Com.Sberbank.VRHouse
     public class Launcher : MonoBehaviourPunCallbacks
     {
         public delegate void OnInitMessage(Init init);
-        public event OnInitMessage OnInit;
 
         #region Private Fields
 
@@ -72,7 +71,7 @@ namespace Com.Sberbank.VRHouse
         void Start()
         {
             PhotonNetwork.AutomaticallySyncScene = true;
-            DataProvider.client = new WebSocketClient("vrhouse.denmko.ru", 1998);
+            //DataProvider.client = new WebSocketClient("vrhouse.denmko.ru", 1998);
             //DataProvider.client.PostEcho().GetAwaiter().GetResult();
 
             //using (UnityWebRequest www = UnityWebRequest.Get("http://vrhouse.denmko.ru:1998/client/register"))
@@ -90,10 +89,8 @@ namespace Com.Sberbank.VRHouse
             //}
 
 
-            DataProvider.client.OnInit += HandleInit;
-            //this.OnInit += HandleInit;
-            //OnInit(MockInit());
-            //HandleInit(MockInit());
+            //DataProvider.client.OnInit += HandleInit;
+            HandleInit(MockInit());
         }
 
         //void Start()
