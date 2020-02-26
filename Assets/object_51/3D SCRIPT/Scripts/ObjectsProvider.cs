@@ -5,25 +5,23 @@ using UnityEngine;
 public class ObjectsProvider : MonoBehaviour
 {
     [SerializeField]
-    List<string> uids;
-
-    [SerializeField]
-    List<GameObject> gameObjects;
+    private List<ObjectWithUid> objectWithUidList = new List<ObjectWithUid>();
 
     public static Dictionary<string, GameObject> objects;
 
     void Start()
     {
         objects = new Dictionary<string, GameObject>();
-        for (var i = 0; i < Math.Min(uids.Count, gameObjects.Count); ++i)
+        foreach (var item in objectWithUidList)
         {
-            objects.Add(uids[i], gameObjects[i]);
+            objects.Add(item.uid, item.obj);
         }
     }
+}
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+[Serializable]
+public class ObjectWithUid
+{
+    public GameObject obj;
+    public string uid;
 }

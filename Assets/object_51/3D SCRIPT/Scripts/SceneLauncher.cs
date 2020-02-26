@@ -63,16 +63,19 @@ public class SceneLauncher : MonoBehaviour
         else
         {
             AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(www);
-            var name = bundle.AllAssetNames()[0];
-            var loadAsset = bundle.LoadAssetAsync<GameObject>(name);
-            yield return loadAsset;
-            var newMesh = ((GameObject)loadAsset.asset).GetComponent<MeshFilter>().sharedMesh;
+            var name = bundle.GetAllAssetNames()[0];
+            var loadedAsset = bundle.LoadAssetAsync<GameObject>(name);
+            yield return loadedAsset;
+            var loadedObject = ((GameObject)loadedAsset.asset).gameObject;
 
-            var obj = ObjectsProvider.objects[swap.oldId];
-            obj.GetComponent<MeshFilter>().mesh = newMesh;
+            var currentObject = ObjectsProvider.objects[swap.oldId];
+            for (var i = currentObject.transform.GetChildCount() - 1; i >= 0; --i)
+            {
+                var child = currentObject.transform.GetChild(i);
+                Destroy(child.gameObject);
+            }
 
-            ObjectsProvider.objects.Remove(swap.oldId);
-            ObjectsProvider.objects[swap.newId] = obj;
+            Instantiate(loadedObject.transform, currentObject.transform);
         }
     }
 

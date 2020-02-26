@@ -90,10 +90,10 @@ namespace Com.Sberbank.VRHouse
             //}
 
 
-            //DataProvider.client.OnInit += HandleInit;
+            DataProvider.client.OnInit += HandleInit;
             //this.OnInit += HandleInit;
             //OnInit(MockInit());
-            HandleInit(MockInit());
+            //HandleInit(MockInit());
         }
 
         //void Start()
