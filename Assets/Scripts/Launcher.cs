@@ -71,8 +71,8 @@ namespace Com.Sberbank.VRHouse
 
         void Start()
         {
-            //PhotonNetwork.AutomaticallySyncScene = true;
-            //DataProvider.client = new WebSocketClient("vrhouse.denmko.ru", 1998);
+            PhotonNetwork.AutomaticallySyncScene = true;
+            DataProvider.client = new WebSocketClient("vrhouse.denmko.ru", 1998);
             //DataProvider.client.PostEcho().GetAwaiter().GetResult();
 
             //using (UnityWebRequest www = UnityWebRequest.Get("http://vrhouse.denmko.ru:1998/client/register"))
@@ -91,9 +91,9 @@ namespace Com.Sberbank.VRHouse
 
 
             //DataProvider.client.OnInit += HandleInit;
-            this.OnInit += HandleInit;
-            OnInit(MockInit());
-            //HandleInit(MockInit());
+            //this.OnInit += HandleInit;
+            //OnInit(MockInit());
+            HandleInit(MockInit());
         }
 
         //void Start()
@@ -147,7 +147,13 @@ namespace Com.Sberbank.VRHouse
         {
             Debug.LogFormat("{0}: Handling Init", GetType().Name);
             DataProvider.init = init;
-            StartCoroutine(DownloadScene());
+            
+            sceneName = "_Mobile";
+            Debug.LogFormat("{0}: Start connecting to scene", GetType().Name);
+            PhotonNetwork.GameVersion = gameVersion;
+            PhotonNetwork.ConnectUsingSettings();
+            
+            //StartCoroutine(DownloadScene());
         }
 
         IEnumerator DownloadScene()

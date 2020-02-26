@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using Photon.Pun;
+using System.Linq;
 
-public class SwitchController : MonoBehaviourPun
+public class SwitchController : MonoBehaviourPun, IInteractable
 {
     [SerializeField]
     private Light[] lights;
@@ -22,6 +23,26 @@ public class SwitchController : MonoBehaviourPun
         {
             light.enabled = isTurnedOn;
         }
+    }
+
+    public void ChangeState(int state)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            bool isLightTurnedOn = state == 0 ? false : true;
+            this.photonView.RPC("SwitchLights", RpcTarget.All, isLightTurnedOn);
+        }
+    }
+
+    private void SendState()
+    {
+        var state = isTurnedOn ? 1 : 0;
+        var uid = ObjectsProvider.objects.First(x => x.Value == gameObject).Key;
+        DataProvider.client.PostChangeInterativeState(new Client.Model.Interactive()
+        {
+            objectId = uid,
+            state = state
+        });
     }
 
     //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -50,6 +71,8 @@ public class SwitchController : MonoBehaviourPun
         {
             switchLights = false;
             this.photonView.RPC("SwitchLights", RpcTarget.All, !isTurnedOn);
+            SendState();
+
             //Debug.LogFormat("SwitchController: Switch lights, isRIndexTriggerPressed = {0}, isButtonReleased = {1}", isRIndexTriggerPressed, isButtonReleased);
             //base.photonView.RequestOwnership();
             //isTurnedOn = !isTurnedOn;

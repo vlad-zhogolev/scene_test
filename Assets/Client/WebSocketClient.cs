@@ -65,7 +65,7 @@ namespace Client
             return true;
         }
 
-        public async Task PostPosition(int x, int y)
+        public async Task PostPosition(float x, float y)
         {
             var position = new Position()
             {
@@ -75,12 +75,6 @@ namespace Client
             };
             var content = JsonConvert.SerializeObject(new SocketMessage() { messageType = "POSITION", messageValue = JsonConvert.SerializeObject(position) });
             _webSocket.SendAsync(content, (completed) => { });
-        }
-
-        public async Task PostEcho()
-        {
-            var echo = JsonConvert.SerializeObject(new SocketMessage() { messageType = "ECHO", messageValue = "test" });
-            _webSocket.SendAsync(echo, (completed) => { });
         }
 
         public async Task PostChangeInterativeState(Interactive interactive)

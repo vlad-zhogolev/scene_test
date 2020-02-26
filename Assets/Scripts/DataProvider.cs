@@ -8,4 +8,5 @@ public class DataProvider
 {
     public static WebSocketClient client;
     public static Init init;
+    public static GameObject player;
 }
