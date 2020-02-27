@@ -27,10 +27,12 @@ public class SwitchController : MonoBehaviourPun, IInteractable
 
     public void ChangeState(int state)
     {
+        Debug.Log("SwitchLights");
         if (PhotonNetwork.IsMasterClient)
         {
             bool isLightTurnedOn = state == 0 ? false : true;
             this.photonView.RPC("SwitchLights", RpcTarget.All, isLightTurnedOn);
+            SendState();
         }
     }
 

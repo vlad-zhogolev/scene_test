@@ -70,33 +70,18 @@ namespace Com.Sberbank.VRHouse
 
         void Start()
         {
+            Debug.LogFormat("[{0}] Start app", GetType().Name);
             PhotonNetwork.AutomaticallySyncScene = true;
-            //DataProvider.client = new WebSocketClient("vrhouse.denmko.ru", 1998);
-            //DataProvider.client.PostEcho().GetAwaiter().GetResult();
 
-            //using (UnityWebRequest www = UnityWebRequest.Get("http://vrhouse.denmko.ru:1998/client/register"))
-            //{
-            //    www.SendWebRequest();
-            //
-            //    if (www.isNetworkError || www.isHttpError)
-            //    {
-            //        Debug.Log(www.error);
-            //    }
-            //    else
-            //    {
-            //        Debug.Log("Form upload complete!");
-            //    }
-            //}
-
-
+            Debug.LogFormat("[{0}] Creating websocket", GetType().Name);
+            DataProvider.client = new WebSocketClient("vrhouse.denmko.ru", 1998);
+            //DataProvider.client = new WebSocketClient("192.168.43.148", 1998);
             //DataProvider.client.OnInit += HandleInit;
+
+            Debug.LogFormat("[{0}] Waiting for INIT", GetType().Name);
+            // for test purpose only
             HandleInit(MockInit());
         }
-
-        //void Start()
-        //{
-        //    PhotonNetwork.AutomaticallySyncScene = true;
-        //}
 
         #endregion
 
@@ -110,7 +95,6 @@ namespace Com.Sberbank.VRHouse
         public override void OnConnectedToMaster()
         {
             Debug.Log("Launcher: OnConnectedToMaster() was called by PUN");
-            //PhotonNetwork.JoinLobby();
             RoomOptions roomOptions = new RoomOptions() { MaxPlayers = (byte)DataProvider.init.maxPlayers };
             PhotonNetwork.JoinOrCreateRoom(DataProvider.init.roomId, roomOptions, TypedLobby.Default);
         }
@@ -118,13 +102,6 @@ namespace Com.Sberbank.VRHouse
         public override void OnDisconnected(DisconnectCause cause)
         {
             Debug.LogWarningFormat("Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
-        }
-
-        public override void OnJoinedLobby()
-        {
-            //Debug.Log("Launcher: Joined lobby");
-            //RoomOptions roomOptions = new RoomOptions() { MaxPlayers = maxPlayersPerRoom };
-            //PhotonNetwork.JoinOrCreateRoom(room, roomOptions, TypedLobby.Default);
         }
 
         public override void OnJoinedRoom()

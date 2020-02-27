@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine.Networking;
 using WebSocketSharp;
+using UnityEngine;
 
 namespace Client
 {
@@ -35,6 +36,7 @@ namespace Client
         public WebSocketClient() { }
         public WebSocketClient(string address, int port)
         {
+            Debug.LogFormat("[{0}] Creating websocket", GetType().Name);
             _address = address;
             _port = port;
             OnInit += (init) => { };
@@ -43,10 +45,12 @@ namespace Client
 
             ConnectToSessionForcedAsync().GetAwaiter().GetResult();
             _webSocket = ConnectSocket();
+            Debug.LogFormat("[{0}] Creating websocket ended", GetType().Name);
         }
 
         public async Task<bool> ConnectToSessionForcedAsync()
         {
+            Debug.LogFormat("[{0}] ConnectToSessionForcedAsync begin", GetType().Name);
             WebRequest request = WebRequest.Create($"{GetUrlAddress()}/client/register/force");
             var response = request.GetResponse();
             var str = string.Empty;
@@ -62,6 +66,7 @@ namespace Client
             }
             _clientId = str;
 
+            Debug.LogFormat("[{0}] ConnectToSessionForcedAsync end", GetType().Name);
             return true;
         }
 
@@ -91,6 +96,7 @@ namespace Client
 
         public void InvokeEvents(string message)
         {
+            Debug.LogFormat("[{0}] InvokeEvents begin", GetType().Name);
             var result = JsonConvert.DeserializeObject<SocketMessage>(message);
             switch (result.messageType)
             {
@@ -114,17 +120,21 @@ namespace Client
                         break;
                     }
             }
+            Debug.LogFormat("[{0}] InvokeEvents end", GetType().Name);
         }
 
         private WebSocket ConnectSocket()
         {
+            Debug.LogFormat("[{0}] ConnectSocket begin", GetType().Name);
+
             var ws = new WebSocket($"ws://{_address}:{_port}/websocket/unity/{_clientId}");
             ws.OnMessage += (sender, e) =>
             {
                 InvokeEvents(e.Data);
             };
             ws.Connect();
-            
+
+            Debug.LogFormat("[{0}] ConnectSocket end", GetType().Name);
             return ws;
         }
 
