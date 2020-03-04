@@ -128,6 +128,7 @@ namespace Client
             Debug.LogFormat("[{0}] ConnectSocket begin", GetType().Name);
 
             var ws = new WebSocket($"ws://{_address}:{_port}/websocket/unity/{_clientId}");
+            //var ws = new WebSocket($"ws://{_address}:{_port}/websocket/unity");
             ws.OnMessage += (sender, e) =>
             {
                 InvokeEvents(e.Data);

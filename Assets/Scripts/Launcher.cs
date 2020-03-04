@@ -8,6 +8,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
+#if PLATFORM_ANDROID
+using UnityEngine.Android;
+#endif
 
 namespace Com.Sberbank.VRHouse
 {
@@ -70,17 +73,22 @@ namespace Com.Sberbank.VRHouse
 
         void Start()
         {
+#if PLATFORM_ANDROID
+            Permission.RequestUserPermission(Permission.ExternalStorageRead);
+#endif
+
             Debug.LogFormat("[{0}] Start app", GetType().Name);
             PhotonNetwork.AutomaticallySyncScene = true;
 
             Debug.LogFormat("[{0}] Creating websocket", GetType().Name);
             DataProvider.client = new WebSocketClient("vrhouse.denmko.ru", 1998);
-            //DataProvider.client = new WebSocketClient("192.168.43.148", 1998);
-            //DataProvider.client.OnInit += HandleInit;
+            //DataProvider.client = new WebSocketClient("192.168.43.148", 1998); // Local Irakly
+            //DataProvider.client = new WebSocketClient("192.168.43.132", 1998); // Local Marat
+            DataProvider.client.OnInit += HandleInit;
 
             Debug.LogFormat("[{0}] Waiting for INIT", GetType().Name);
             // for test purpose only
-            HandleInit(MockInit());
+            //HandleInit(MockInit());
         }
 
         #endregion
@@ -119,11 +127,11 @@ namespace Com.Sberbank.VRHouse
 
         void HandleInit(Init init)
         {
-            Debug.LogFormat("{0}: Handling Init", GetType().Name);
+            Debug.LogFormat("[{0}]: Handling Init", GetType().Name);
             DataProvider.init = init;
             
             sceneName = "_Mobile";
-            Debug.LogFormat("{0}: Start connecting to scene", GetType().Name);
+            Debug.LogFormat("[{0}]: Start connecting to scene", GetType().Name);
             PhotonNetwork.GameVersion = gameVersion;
             PhotonNetwork.ConnectUsingSettings();
             

@@ -2,7 +2,7 @@
 {
     public class Interactive
     {
-        public string objectId { get; set; }
+        public string id { get; set; }
 
         public int state { get; set; }
     }

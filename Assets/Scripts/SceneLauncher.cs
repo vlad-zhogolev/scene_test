@@ -38,7 +38,7 @@ public class SceneLauncher : MonoBehaviour
     public void ChangeState()
     {
         Debug.Log($"[{GetType().Name}] ChangeState begin");
-        var uid = interactive.objectId;
+        var uid = interactive.id;
         var obj = ObjectsProvider.objects[uid].gameObject;
         Debug.Log($"[{GetType().Name}] ChangeState begin " + obj.gameObject.name);
         var interactable = obj.GetComponent(typeof(IInteractable)) as IInteractable;
@@ -115,9 +115,15 @@ public class SceneLauncher : MonoBehaviour
         if (testChangeState)
         {
             testChangeState = false;
-            interactive = new Interactive() { objectId = "7b5a3a04-6671-4ab2-be5a-ab8b6f49de3c", state = 1 };
+            interactive = new Interactive() { id = "7b5a3a04-6671-4ab2-be5a-ab8b6f49de3c", state = 1 };
             ChangeState();
         }
+        //if (OVRInput.GetUp(OVRInput.Button.Three) || Input.GetKeyUp(KeyCode.F))
+        //{
+        //    Debug.LogFormat($"[{GetType().Name}] Test swap");
+        //    isSwap = true;
+        //    swap = new Swap { objectId = "8caf001c-dbc2-418d-9bf7-58ca105f16f7", link = "https://uce5f05c49d6d07afd723606dbba.dl.dropboxusercontent.com/cd/0/get/AzNlucZ1A-4dwPUq-7m1rMFg1U9TCQ5zkvryQzszrucgaGBBEwYdonqLXcs7D2IocaGnhbKn2yqoHysiGZMWYRQQXhIb2hTmhd81KPIe6XqBERccchJeS2he03iWy_t9p40/file?dl=1#" };
+        //}
     }
 
     private void OnDestroy()

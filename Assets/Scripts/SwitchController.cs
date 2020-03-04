@@ -42,7 +42,7 @@ public class SwitchController : MonoBehaviourPun, IInteractable
         var uid = ObjectsProvider.objects.First(x => x.Value == gameObject).Key;
         DataProvider.client.PostChangeInterativeState(new Client.Model.Interactive()
         {
-            objectId = uid,
+            id = uid,
             state = state
         });
     }
