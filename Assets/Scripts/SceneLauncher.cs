@@ -122,7 +122,10 @@ public class SceneLauncher : MonoBehaviour
         //{
         //    Debug.LogFormat($"[{GetType().Name}] Test swap");
         //    isSwap = true;
-        //    swap = new Swap { objectId = "8caf001c-dbc2-418d-9bf7-58ca105f16f7", link = "https://uce5f05c49d6d07afd723606dbba.dl.dropboxusercontent.com/cd/0/get/AzNlucZ1A-4dwPUq-7m1rMFg1U9TCQ5zkvryQzszrucgaGBBEwYdonqLXcs7D2IocaGnhbKn2yqoHysiGZMWYRQQXhIb2hTmhd81KPIe6XqBERccchJeS2he03iWy_t9p40/file?dl=1#" };
+        //    //swap = new Swap { objectId = "8caf001c-dbc2-418d-9bf7-58ca105f16f7", link = "https://uce5f05c49d6d07afd723606dbba.dl.dropboxusercontent.com/cd/0/get/AzNlucZ1A-4dwPUq-7m1rMFg1U9TCQ5zkvryQzszrucgaGBBEwYdonqLXcs7D2IocaGnhbKn2yqoHysiGZMWYRQQXhIb2hTmhd81KPIe6XqBERccchJeS2he03iWy_t9p40/file?dl=1#" };
+        //    //swap = new Swap { objectId = "8caf001c-dbc2-418d-9bf7-58ca105f16f7", link = "file:///C:/UnityProjects/Launcher/VRHouse/Assets/AssetBundles/wood_table" };
+        //    //swap = new Swap { objectId = "8caf001c-dbc2-418d-9bf7-58ca105f16f7", link = "file:///C:/UnityProjects/Launcher/VRHouse/Assets/AssetBundles/classic_round_table" };
+        //    swap = new Swap { objectId = "561d8f02-0c2b-40b0-8c20-5e489e3d8d62", link = "file:///C:/UnityProjects/Launcher/VRHouse/Assets/AssetBundles/classic_chair" };
         //}
     }
 

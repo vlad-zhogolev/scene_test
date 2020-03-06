@@ -8,9 +8,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
-#if PLATFORM_ANDROID
-using UnityEngine.Android;
-#endif
 
 namespace Com.Sberbank.VRHouse
 {
@@ -73,10 +70,6 @@ namespace Com.Sberbank.VRHouse
 
         void Start()
         {
-#if PLATFORM_ANDROID
-            Permission.RequestUserPermission(Permission.ExternalStorageRead);
-#endif
-
             Debug.LogFormat("[{0}] Start app", GetType().Name);
             PhotonNetwork.AutomaticallySyncScene = true;
 
