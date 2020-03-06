@@ -28,7 +28,6 @@ public class TestFileWrite : MonoBehaviour
                 yield break;
             }
             // taken from here: https://habr.com/ru/post/433366/
-            // Unity sucks
             var hashRow = manifestRequest.downloadHandler.text.ToString().Split("\n".ToCharArray())[5];
             hash = Hash128.Parse(hashRow.Split(':')[1].Trim());
         }
